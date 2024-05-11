@@ -28,11 +28,7 @@
     method: POST
     headers:
       X-Vault-Token: "{{ hc_vault_token }}"
-    body: |
-      {
-        "lease": "600s",  # Lease duration set to 10 minutes (600 seconds)
-        "public_key": "{{ lookup('template', 'templates/hc_vault_pubkey.j2') }}"
-      }
+    body: "{{ lookup('template', 'templates/hc_vault_pubkey.j2') }}"
     body_format: json
     return_content: yes
   register: r_sign

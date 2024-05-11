@@ -20,11 +20,6 @@
     temp_public_key: "{{ lookup('file', r_tempfile.path + '/id_rsa.pub') }} "
   delegate_to: localhost
   run_once: true
-- name: Read private key 
-  set_fact: 
-    temp_private_key: "{{ lookup('file', r_tempfile.path + '/id_rsa') }} "
-  delegate_to: localhost
-  run_once: true
 
 - name: Sign public key
   uri:
@@ -61,5 +56,5 @@
     ansible_ssh_extra_args: "-i {{ r_tempfile.path }}/signed"
 
 - set_fact:
-    ansible_user: azureuser
+    ansible_user: ansible
 

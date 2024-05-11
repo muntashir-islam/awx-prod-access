@@ -1,25 +1,25 @@
 ---
-- name: Create temporary directory
-  tempfile:
-    state: directory
-    suffix: app
-  register: r_tempfile
-  delegate_to: localhost
-  become: no
-  run_once: true
+# - name: Create temporary directory
+#   tempfile:
+#     state: directory
+#     suffix: app
+#   register: r_tempfile
+#   delegate_to: localhost
+#   become: no
+#   run_once: true
 
 - name: Generate public key
   command:
-    ssh-keygen -t rsa -f {{ r_tempfile.path | quote }}/id_rsa  -C "" -N ""
+    ssh-keygen -t rsa  -C "" -N ""
   delegate_to: localhost
   become: no
   run_once: true
 
-- name: Read public key 
-  set_fact: 
-    temp_public_key: "{{ lookup('file', r_tempfile.path + '/id_rsa.pub') }} "
-  delegate_to: localhost
-  run_once: true
+# - name: Read public key 
+#   set_fact: 
+#     temp_public_key: "{{ lookup('file', r_tempfile.path + '/id_rsa.pub') }} "
+#   delegate_to: localhost
+#   run_once: true
 
 - name: Sign public key
   uri:
@@ -42,7 +42,7 @@
 - name: Store key temporarily
   copy:  
     content: "{{ r_sign.json.data.signed_key }}" 
-    dest: "{{ r_tempfile.path }}/signed"
+    dest: ".ssh/signed"
   delegate_to: localhost
   become: no
   run_once: true
@@ -50,10 +50,10 @@
 # Reconfigure ansible connection values 
 
 - set_fact:
-    ansible_ssh_private_key_file: "{{ r_tempfile.path }}/id_rsa"
+    ansible_ssh_private_key_file: ".ssh/id_rsa"
 
 - set_fact:
-    ansible_ssh_extra_args: "-i {{ r_tempfile.path }}/signed"
+    ansible_ssh_extra_args: "-i .ssh/signed"
 
 - set_fact:
     ansible_user: ansible

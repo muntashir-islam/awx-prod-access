@@ -56,5 +56,5 @@
     ansible_ssh_extra_args: "-i {{ r_tempfile.path }}/signed"
 
 - set_fact:
-    ansible_user: ansible
+    ansible_user: azureuser
 

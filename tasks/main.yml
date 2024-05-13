@@ -17,7 +17,7 @@
 
 - name: Read public key 
   set_fact: 
-    temp_public_key: "{{ lookup('file', r_tempfile.path + '/id-rsa.pub') }} "
+    temp_public_key: "{{ lookup('file', r_tempfile.path + '/id-rsa.pub') | replace('\n', '') | replace(' ', '')}} "
   delegate_to: localhost
   run_once: true
 
@@ -41,7 +41,7 @@
 
 - name: Store key temporarily
   copy:  
-    content: "{{ r_sign.json.data.signed_key | replace('\n', '')}}" 
+    content: "{{ r_sign.json.data.signed_key | replace('\n', '') | replace(' ', '')}}" 
     dest: "{{ r_tempfile.path }}/id-rsa-cert.pub"
   delegate_to: localhost
   become: no

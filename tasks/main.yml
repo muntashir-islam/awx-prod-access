@@ -17,7 +17,7 @@
 
 - name: Read public key 
   set_fact: 
-    temp_public_key: "{{ lookup('file', r_tempfile.path + '/id-rsa.pub') | replace('\n', '') | replace(' ', '')}} "
+    temp_public_key: "{{ lookup('file', r_tempfile.path + '/id-rsa.pub') | regex_replace(' +$', '') }}"
   delegate_to: localhost
   run_once: true
 

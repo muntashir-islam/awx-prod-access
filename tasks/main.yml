@@ -42,7 +42,7 @@
 - name: Store key temporarily
   copy:  
     content: "{{ r_sign.json.data.signed_key }}" 
-    dest: "{{ r_tempfile.path }}/id_rsa_cert.pub"
+    dest: "{{ r_tempfile.path }}/id_rsacert.pub"
   delegate_to: localhost
   become: no
   run_once: true
@@ -53,7 +53,7 @@
     ansible_ssh_private_key_file: "{{ r_tempfile.path }}/id_rsa"
 
 - set_fact:
-    ansible_ssh_extra_args: "-i {{ r_tempfile.path }}/id_rsa_cert.pub"
+    ansible_ssh_extra_args: "-i {{ r_tempfile.path }}/id_rsacert.pub"
 
 - set_fact:
     ansible_user: azureuser

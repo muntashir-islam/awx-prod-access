@@ -10,14 +10,14 @@
 
 - name: Generate public key
   command:
-    ssh-keygen -t rsa -f {{ r_tempfile.path | quote }}/id_rsa  -C "" -N ""
+    ssh-keygen -t rsa -f {{ r_tempfile.path | quote }}/id-rsa  -C "" -N ""
   delegate_to: localhost
   become: no
   run_once: true
 
 - name: Read public key 
   set_fact: 
-    temp_public_key: "{{ lookup('file', r_tempfile.path + '/id_rsa') }} "
+    temp_public_key: "{{ lookup('file', r_tempfile.path + '/id-rsa.pub') }} "
   delegate_to: localhost
   run_once: true
 
@@ -42,7 +42,7 @@
 - name: Store key temporarily
   copy:  
     content: "{{ r_sign.json.data.signed_key }}" 
-    dest: "{{ r_tempfile.path }}/id_rsa-cert.pub"
+    dest: "{{ r_tempfile.path }}/id-rsa-cert.pub"
   delegate_to: localhost
   become: no
   run_once: true
@@ -50,10 +50,10 @@
 # Reconfigure ansible connection values 
 
 - set_fact:
-    ansible_ssh_private_key_file: "{{ r_tempfile.path }}/id_rsa"
+    ansible_ssh_private_key_file: "{{ r_tempfile.path }}/id-rsa"
 
 - set_fact:
-    ansible_ssh_extra_args: "-o CertificateFile={{ r_tempfile.path }}/id_rsa-cert.pub"
+    ansible_ssh_extra_args: "-i {{ r_tempfile.path }}/id-rsa-cert.pub"
 
 - set_fact:
     ansible_user: azureuser

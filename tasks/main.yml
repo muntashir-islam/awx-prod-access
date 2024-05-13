@@ -17,7 +17,7 @@
 
 - name: Read public key 
   set_fact: 
-    temp_public_key: "{{ lookup('file', r_tempfile.path + '/id_rsa.pub') }} "
+    temp_public_key: "{{ lookup('file', r_tempfile.path + '/id_rsa-cert.pub') }} "
   delegate_to: localhost
   run_once: true
 
@@ -42,7 +42,7 @@
 - name: Store key temporarily
   copy:  
     content: "{{ r_sign.json.data.signed_key }}" 
-    dest: "{{ r_tempfile.path }}/id_rsacert.pub"
+    dest: "{{ r_tempfile.path }}/id_rsa-cert.pub"
   delegate_to: localhost
   become: no
   run_once: true
@@ -53,7 +53,7 @@
     ansible_ssh_private_key_file: "{{ r_tempfile.path }}/id_rsa"
 
 - set_fact:
-    ansible_ssh_certificate_file: "{{ r_tempfile.path }}/id_rsacert.pub"
+    ansible_ssh_certificate_file: "{{ r_tempfile.path }}/id_rsa-cert.pub"
 
 - set_fact:
     ansible_user: azureuser

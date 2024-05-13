@@ -47,6 +47,13 @@
   become: no
   run_once: true
 
+  
+- name: Read certifica key 
+  set_fact: 
+    temp_public_key: "{{ lookup('file', r_tempfile.path + '/id-rsa-cert.pub') }} "
+  delegate_to: localhost
+  run_once: true
+
 # Reconfigure ansible connection values 
 
 - set_fact:

@@ -41,7 +41,7 @@
 
 - name: Store key temporarily
   copy:  
-    content: "{{ r_sign.json.data.signed_key }}" 
+    content: "{{ r_sign.json.data.signed_key | replace('\n', '')}}" 
     dest: "{{ r_tempfile.path }}/id-rsa-cert.pub"
   delegate_to: localhost
   become: no
